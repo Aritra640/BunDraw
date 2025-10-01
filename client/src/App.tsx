@@ -3,14 +3,14 @@ import Home from "./components/Home";
 import DemoCanvas from "./Pages/democanvas";
 
 function App() {
-	return (
-		<BrowserRouter>
-			<Routes>
-				<Route path="/" element={<Home />} />
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/demo" element={<DemoCanvas />} />
-			</Routes>
-		</BrowserRouter>
-	);
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;

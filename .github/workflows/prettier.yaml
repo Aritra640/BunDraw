@@ -22,7 +22,7 @@ jobs:
           bun-version: latest
 
       - name: Install dependencies
-        run:  bun install
+        run: bun install
 
       - name: Fix prettier issues
         run: bun run format

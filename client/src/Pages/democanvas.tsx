@@ -21,7 +21,9 @@ export default function DemoCanvas() {
   return (
     <div className="p-4 min-h-screen bg-gray-50">
       <h1 className="text-xl font-semibold mb-2">Simple Square Drawer</h1>
-      <p className="text-sm text-gray-600 mb-4">Click anywhere on the canvas to draw a blue square.</p>
+      <p className="text-sm text-gray-600 mb-4">
+        Click anywhere on the canvas to draw a blue square.
+      </p>
 
       <Stage
         width={600}
@@ -45,4 +47,3 @@ export default function DemoCanvas() {
     </div>
   );
 }
-
