@@ -1,10 +1,12 @@
 import { Canvastab } from "@/components/canvas/canvastab";
+import { Projectnametab } from "@/components/canvas/project_name";
+import { ThemeButton } from "@/components/global/themeButton";
 import { themeAtom } from "@/state/themeAtom";
 import { useAtom } from "jotai";
 
 const themes = {
-  Dark: "bg-black text-white",
-  Bright: "bg-slate-100 text-black",
+  Dark: "bg-gray-950/90 text-white",
+  Bright: "bg-slate-200 text-black",
 };
 
 export function CanvasPage() {
@@ -12,8 +14,11 @@ export function CanvasPage() {
 
   return (
     <div className={"h-screen w-screen " + themes[theme]}>
-      <div className="flex justify-center pt-2">
+      <div className="flex justify-around pt-2">
+        <Projectnametab />
         <Canvastab />
+
+        <ThemeButton />
       </div>
     </div>
   );

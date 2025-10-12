@@ -1,4 +1,4 @@
 export function Toolbutton() {
 
-  return <div>This is the tool br</div>
+  return <div></div>
 }
