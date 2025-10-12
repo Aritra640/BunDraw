@@ -1,5 +1,7 @@
 import { Canvastab } from "@/components/canvas/canvastab";
 import { Projectnametab } from "@/components/canvas/project_name";
+import { CollabButton } from "@/components/global/collabButton";
+import { FileButton } from "@/components/global/fileButton";
 import { ThemeButton } from "@/components/global/themeButton";
 import { themeAtom } from "@/state/themeAtom";
 import { useAtom } from "jotai";
@@ -15,10 +17,18 @@ export function CanvasPage() {
   return (
     <div className={"h-screen w-screen " + themes[theme]}>
       <div className="flex justify-around pt-2">
-        <Projectnametab />
+        <span className="flex gap-2">
+          <FileButton />
+          <Projectnametab />
+        </span>
+        <b />
         <Canvastab />
+        <br />
 
-        <ThemeButton />
+        <span className="flex gap-2">
+          <ThemeButton />
+          <CollabButton />
+        </span>
       </div>
     </div>
   );

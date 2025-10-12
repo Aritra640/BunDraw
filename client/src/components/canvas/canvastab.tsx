@@ -8,6 +8,11 @@ import { LineTool } from "./tools/line";
 import { RhombusTool } from "./tools/rhombus";
 import { SquareTool } from "./tools/square";
 import { CircleTool } from "./tools/circle";
+import { ArrowTool } from "./tools/arrow";
+import { EraserTool } from "./tools/eraser";
+import { LockTool } from "./tools/lock";
+import { ListTool } from "./tools/list";
+import { TextTool } from "./tools/text";
 
 const themes = {
   Dark: "bg-gray-950 cursor-pointer hover:text-white hover:bg-gray-950",
@@ -57,25 +62,32 @@ export function Canvastab() {
         className={tool == "arrow" ? themes["Tool"] : themes[theme]}
         variant="ghost"
       >
-        arrow
+        <ArrowTool />
       </Button>
       <Button
         className={tool == "erasure" ? themes["Tool"] : themes[theme]}
         variant="ghost"
       >
-        erasure
+        <EraserTool />
       </Button>
+       <Button
+        className={tool == "text" ? themes["Tool"] : themes[theme]}
+        variant="ghost"
+      >
+        <TextTool />
+      </Button>
+
       <Button
         className={tool == "lock" ? themes["Tool"] : themes[theme]}
         variant="ghost"
       >
-        lock
+        <LockTool />
       </Button>
       <Button
         className={tool == "file" ? themes["Tool"] : themes[theme]}
         variant="ghost"
       >
-        file
+        <ListTool />
       </Button>
     </ButtonGroup>
   );
