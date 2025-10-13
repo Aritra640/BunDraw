@@ -13,6 +13,7 @@ import { EraserTool } from "./tools/eraser";
 import { LockTool } from "./tools/lock";
 import { ListTool } from "./tools/list";
 import { TextTool } from "./tools/text";
+import { PencilTool } from "./tools/pencil";
 
 const themes = {
   Dark: "bg-gray-950 cursor-pointer hover:text-white hover:bg-gray-950",
@@ -33,6 +34,14 @@ export function Canvastab() {
       >
         <HandTool />
       </Button>
+       <Button
+        onClick={() => {setTool("pencil")}}
+        className={tool == "pencil" ? themes["Tool"] : themes[theme]}
+        variant="ghost"
+      >
+        <PencilTool />
+      </Button>
+
       <Button
         onClick={() => {setTool("rhombus")}}
         className={tool == "rhombus" ? themes["Tool"] : themes[theme]}
