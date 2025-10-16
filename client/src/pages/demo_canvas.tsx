@@ -1,108 +1,186 @@
-import { atom, useAtom } from "jotai";
-import { themeAtom } from "@/state/themeAtom";
-import { Topbar } from "@/components/canvas/components/topbar";
 import { Stage, Layer, Line, Rect, Circle } from "react-konva";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { useAtom } from "jotai";
+import { themeAtom } from "@/state/themeAtom";
 import { toolAtom } from "@/state/toolAtom";
+import { Topbar } from "@/components/canvas/components/topbar";
 
 export function DemoCanvasPage() {
   const [theme] = useAtom(themeAtom);
   const [tool] = useAtom(toolAtom);
-  const [color] = useAtom(atom("#000000"));
-  const [brushSize] = useAtom(atom(3));
+  const [color] = useState("#000000");
+  const [brushSize] = useState(3);
+  const eraserSize = 20;
 
   const [lines, setLines] = useState<any[]>([]);
   const [shapes, setShapes] = useState<any[]>([]);
   const [isDrawing, setIsDrawing] = useState(false);
 
-  const handleMouseDown = (e: any) => {
-    const pos = e.target.getStage().getPointerPosition();
-    if (!pos) return;
-    setIsDrawing(true);
+  const stageRef = useRef<any>(null);
+  const scaleRef = useRef(1);
+  const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
+  const lastPos = useRef<{ x: number; y: number } | null>(null);
 
-    if (tool === "pencil") {
-      // Create a new line with the current color
+  const getAdjustedPos = (pos: { x: number; y: number }) => ({
+    x: (pos.x - stagePos.x) / scaleRef.current,
+    y: (pos.y - stagePos.y) / scaleRef.current,
+  });
+
+  const handleMouseDown = (e: any) => {
+    const stage = stageRef.current;
+    const pos = stage.getPointerPosition();
+    if (!pos) return;
+
+    if (tool === "hand") {
+      lastPos.current = pos;
+      return;
+    }
+
+    setIsDrawing(true);
+    const adj = getAdjustedPos(pos);
+
+    if (tool === "pencil" || tool === "erasure") {
       setLines((prev) => [
         ...prev,
-        { points: [pos.x, pos.y], color, width: brushSize },
+        {
+          points: [adj.x, adj.y],
+          color,
+          width: tool === "erasure" ? eraserSize : brushSize,
+          mode: tool === "erasure" ? "erase" : "draw",
+        },
       ]);
-    } else if (tool === "rhombus" || tool === "circle") {
-      // Create a new shape with the current color
+    } else if (["rhombus", "square", "circle", "line"].includes(tool)) {
       setShapes((prev) => [
         ...prev,
-        { tool, x: pos.x, y: pos.y, width: 0, height: 0, color },
+        { tool, x: adj.x, y: adj.y, width: 0, height: 0, color },
       ]);
     }
   };
 
   const handleMouseMove = (e: any) => {
-    if (!isDrawing) return;
-    const stage = e.target.getStage();
-    const point = stage.getPointerPosition();
-    if (!point) return;
+    const stage = stageRef.current;
+    const pos = stage.getPointerPosition();
+    if (!pos) return;
 
-    if (tool === "pencil") {
+    if (tool === "hand" && lastPos.current) {
+      const dx = pos.x - lastPos.current.x;
+      const dy = pos.y - lastPos.current.y;
+      setStagePos((prev) => ({ x: prev.x + dx, y: prev.y + dy }));
+      lastPos.current = pos;
+      return;
+    }
+
+    if (!isDrawing) return;
+
+    const adj = getAdjustedPos(pos);
+
+    if (tool === "pencil" || tool === "erasure") {
       setLines((prev) => {
         const newLines = [...prev];
         const lastLine = newLines[newLines.length - 1];
-        lastLine.points = lastLine.points.concat([point.x, point.y]);
+        lastLine.points = lastLine.points.concat([adj.x, adj.y]);
         return newLines;
       });
-    } else if (tool === "rhombus" || tool === "circle") {
+    } else if (["rhombus", "square", "circle", "line"].includes(tool)) {
       setShapes((prev) => {
         const newShapes = [...prev];
         const lastShape = newShapes[newShapes.length - 1];
-        lastShape.width = point.x - lastShape.x;
-        lastShape.height = point.y - lastShape.y;
+        lastShape.width = adj.x - lastShape.x;
+        lastShape.height = adj.y - lastShape.y;
         return newShapes;
       });
     }
   };
 
-  const handleMouseUp = () => setIsDrawing(false);
+  const handleMouseUp = () => {
+    setIsDrawing(false);
+    lastPos.current = null;
+  };
 
   return (
-    <div className={`h-screen w-screen overflow-hidden ${theme === "Dark" ? "bg-gray-950" : "bg-slate-200"}`}>
+    <div
+      className={`h-screen w-screen overflow-hidden ${
+        theme === "Dark" ? "bg-gray-950" : "bg-slate-200"
+      }`}
+    >
       <Topbar />
       <Stage
+        ref={stageRef}
         width={window.innerWidth}
         height={window.innerHeight}
         onMouseDown={handleMouseDown}
-        onMousemove={handleMouseMove}
-        onMouseup={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
       >
-        <Layer>
+        {/* Apply pan offset at Layer level */}
+        <Layer x={stagePos.x} y={stagePos.y}>
           {lines.map((line, i) => (
             <Line
               key={i}
               points={line.points}
-              stroke={line.color} // Each line keeps its own color
+              stroke={line.color}
               strokeWidth={line.width}
               tension={0.5}
               lineCap="round"
+              globalCompositeOperation={
+                line.mode === "erase" ? "destination-out" : "source-over"
+              }
             />
           ))}
 
-          {shapes.map((shape, i) =>
-            shape.tool === "rectangle" ? (
-              <Rect
-                key={i}
-                x={shape.x}
-                y={shape.y}
-                width={shape.width}
-                height={shape.height}
-                stroke={shape.color}
-              />
-            ) : (
-              <Circle
-                key={i}
-                x={shape.x + shape.width / 2}
-                y={shape.y + shape.height / 2}
-                radius={Math.sqrt(shape.width ** 2 + shape.height ** 2) / 2}
-                stroke={shape.color}
-              />
-            )
-          )}
+          {shapes.map((shape, i) => {
+            if (shape.tool === "square") {
+              return (
+                <Rect
+                  key={i}
+                  x={shape.x}
+                  y={shape.y}
+                  width={shape.width}
+                  height={shape.height}
+                  stroke={shape.color}
+                />
+              );
+            }
+            if (shape.tool === "rhombus") {
+              const size = Math.sqrt(shape.width ** 2 + shape.height ** 2);
+              return (
+                <Rect
+                  key={i}
+                  x={shape.x}
+                  y={shape.y}
+                  width={size}
+                  height={size}
+                  stroke={shape.color}
+                  rotation={45}
+                  offsetX={size / 2}
+                  offsetY={size / 2}
+                />
+              );
+            }
+            if (shape.tool === "circle") {
+              return (
+                <Circle
+                  key={i}
+                  x={shape.x + shape.width / 2}
+                  y={shape.y + shape.height / 2}
+                  radius={Math.sqrt(shape.width ** 2 + shape.height ** 2) / 2}
+                  stroke={shape.color}
+                />
+              );
+            }
+            if (shape.tool === "line") {
+              return (
+                <Line
+                  key={i}
+                  points={[shape.x, shape.y, shape.x + shape.width, shape.y + shape.height]}
+                  stroke={shape.color}
+                  strokeWidth={brushSize}
+                  lineCap="round"
+                />
+              );
+            }
+            return null;
+          })}
         </Layer>
       </Stage>
     </div>
