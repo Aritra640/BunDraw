@@ -2,8 +2,8 @@ import { FileButton } from "@/components/global/fileButton";
 import { Projectnametab } from "../project_name";
 import { Canvastab } from "../canvastab";
 import { ThemeButton } from "@/components/global/themeButton";
-import { CollabButton } from "@/components/global/collabButton";
 import { MobileFileButton } from "@/components/global/mobileFileButton";
+import CollaborateModalIcon from "../modals/collabModal";
 
 export function Topbar() {
   return (
@@ -22,7 +22,7 @@ export function Topbar() {
 
         <span className="flex gap-2">
           <ThemeButton />
-          <CollabButton />
+          <CollaborateModalIcon />
         </span>
       </div>
     </>

@@ -1,4 +1,5 @@
 import { Topbar } from "@/components/canvas/components/topbar";
+import { ProjectNameModal } from "@/components/canvas/modals/projectModal";
 import { themeAtom } from "@/state/themeAtom";
 import { useAtom } from "jotai";
 
@@ -13,6 +14,8 @@ export function CanvasPage() {
   return (
     <div className={"h-screen w-screen " + themes[theme]}>
       <Topbar />
+      <div className="pl-3 pt-2"><ProjectNameModal /></div>
+      {/* <div className="flex justify-center items-center"><CollabModal /></div> */}
     </div>
   );
 }
