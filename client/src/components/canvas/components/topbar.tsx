@@ -3,7 +3,7 @@ import { Projectnametab } from "../project_name";
 import { Canvastab } from "../canvastab";
 import { ThemeButton } from "@/components/global/themeButton";
 import { MobileFileButton } from "@/components/global/mobileFileButton";
-import CollaborateModalIcon from "../modals/collabModal";
+import { CollabButton } from "@/components/global/collabButton";
 
 export function Topbar() {
   return (
@@ -22,7 +22,7 @@ export function Topbar() {
 
         <span className="flex gap-2">
           <ThemeButton />
-          <CollaborateModalIcon />
+          <CollabButton />
         </span>
       </div>
     </>

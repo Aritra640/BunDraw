@@ -44,7 +44,7 @@ export function CollabModal() {
       <CardContent>{/* Add form fields or inputs here */}</CardContent>
 
       <CardFooter className="flex flex-col gap-2">
-        <Button className="w-full bg-purple-700">Collaborate</Button>
+        <Button className="w-full bg-purple-700 cursor-pointer hover:bg-purple-600">Collaborate</Button>
       </CardFooter>
     </Card>
   );
