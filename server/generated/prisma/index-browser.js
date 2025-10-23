@@ -129,6 +129,22 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password'
 };
 
+exports.Prisma.ProjectScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  createdAt: 'createdAt',
+  adminId: 'adminId'
+};
+
+exports.Prisma.CanvasObjectScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  type: 'type',
+  objectInfo: 'objectInfo',
+  userId: 'userId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -146,7 +162,9 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Project: 'Project',
+  CanvasObject: 'CanvasObject'
 };
 
 /**
