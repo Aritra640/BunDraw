@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Github } from "lucide-react";
 import { motion } from "framer-motion";
-import { AuthModal } from "@/components/authentication/authmodal";
 import { useAtom } from "jotai";
 import { authmodalAtom } from "@/state/modal_state/authmodalAtom";
 
@@ -11,7 +10,7 @@ export default function HomePage() {
   return (
 
     <div>
-      <div className="flex justify-center items-center pt-28"><AuthModal /></div>
+      {/* <div className="flex justify-center items-center pt-28"><AuthModal /></div> */}
 
       <div className="relative min-h-screen w-full overflow-x-hidden text-white bg-gradient-to-b from-black via-[#0a0014] to-[#1a001f]">
         {/* Floating neon fog animation */}
