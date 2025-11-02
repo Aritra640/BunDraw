@@ -3,6 +3,7 @@ import { Github } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAtom } from "jotai";
 import { authmodalAtom } from "@/state/modal_state/authmodalAtom";
+import { AuthModal } from "@/components/authentication/authmodal";
 
 export default function HomePage() {
   const [auth, setAuth] = useAtom(authmodalAtom);
@@ -10,8 +11,6 @@ export default function HomePage() {
   return (
 
     <div>
-      {/* <div className="flex justify-center items-center pt-28"><AuthModal /></div> */}
-
       <div className="relative min-h-screen w-full overflow-x-hidden text-white bg-gradient-to-b from-black via-[#0a0014] to-[#1a001f]">
         {/* Floating neon fog animation */}
         <motion.div
@@ -36,11 +35,12 @@ export default function HomePage() {
           <div className="flex gap-4 items-center">
             <Button
               variant="outline"
+              onClick={() => {setAuth({state: true, status: "signin"})}}
               className="bg-black/30 cursor-pointer border-white/30 text-white hover:bg-purple-700/40 hover:text-white transition"
             >
               Log In
             </Button>
-            <Button onClick={() => {setAuth(true)}} className="bg-gradient-to-r cursor-pointer from-fuchsia-500 via-purple-600 to-indigo-700 text-white font-bold hover:scale-105 transition-transform shadow-[0_0_15px_rgba(255,0,200,0.5)]">
+            <Button onClick={() => {setAuth({state: true, status: "signup"})}} className="bg-gradient-to-r cursor-pointer from-fuchsia-500 via-purple-600 to-indigo-700 text-white font-bold hover:scale-105 transition-transform shadow-[0_0_15px_rgba(255,0,200,0.5)]">
               Get Started
             </Button>
             <a
@@ -52,6 +52,9 @@ export default function HomePage() {
             </a>
           </div>
         </nav>
+
+        <div className=""><AuthModal /></div>
+
 
         {/* Hero Section */}
         <section className="relative flex flex-col items-center justify-center text-center px-8 py-32 z-10">
@@ -77,6 +80,7 @@ export default function HomePage() {
           </motion.p>
           <Button
             size="lg"
+            onClick={() => {setAuth({state: true, status: "signup"})}}
             className="bg-gradient-to-r cursor-pointer from-pink-500 via-purple-600 to-blue-600 text-white text-xl font-bold px-10 py-6 rounded-full hover:scale-110 transition-all shadow-[0_0_30px_rgba(200,0,255,0.5)]"
           >
             Start Drawing Now ⚡

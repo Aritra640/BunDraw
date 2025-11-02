@@ -1,9 +1,18 @@
-import { ProjectNameModal } from "@/components/canvas/modals/projectModal";
+import { AuthModal } from "@/components/authentication/authmodal";
+import { authmodalAtom } from "@/state/modal_state/authmodalAtom";
+import { useAtom } from "jotai";
+import { useEffect } from "react";
 
 export function DemoTest() {
+  const [, setAuth] = useAtom(authmodalAtom);
 
-  return <div>
+  useEffect(() => {
+    setAuth({ state: true, status: "signin"});
+  });
 
-    <ProjectNameModal />
-  </div>
+  return (
+    <div>
+      <AuthModal />
+    </div>
+  );
 }
