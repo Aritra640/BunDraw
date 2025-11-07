@@ -11,7 +11,6 @@ user.post("/signin", (c) => c.text("signin user"));
 user.delete("/auth/signout", (c) => c.text("log out user"));
 user.delete("/auth/delete/:id", (c) => c.text("delete user"));
 
-user.put("/forgetpassword/:email", (c) => c.text("forget user password"));
 user.put("/auth/username", (c) => c.text("change username"));
 user.put("/auth/password", (c) => c.text("change password"));
 
